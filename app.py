@@ -1,3 +1,5 @@
+# app.py - Diabetes Prediction App (Random Forest)
+
 import streamlit as st
 import pandas as pd
 import joblib
@@ -6,7 +8,9 @@ import os
 # Load trained Random Forest model safely
 @st.cache_resource
 def load_model():
-    model_path = "RandomForest_model.pkl"   # adjust if inside a folder
+    # ✅ Updated model path (use this if your model is inside a folder named "models")
+    model_path = "models/RandomForest_model.pkl"   # <-- UPDATED PATH
+    
     if not os.path.exists(model_path):
         st.error(f"❌ Model file not found at: {model_path}. Please check your repo structure.")
         st.stop()
@@ -14,7 +18,7 @@ def load_model():
 
 model = load_model()
 
-# Streamlit app
+# Streamlit app setup
 st.set_page_config(page_title="Diabetes Prediction", layout="centered")
 st.title("🌿 Diabetes Prediction App (Random Forest)")
 
@@ -46,11 +50,11 @@ input_dict_raw = {
     'HEIGHT(cm)': [height],
     'BMI': [bmi],
     'WAIST CIRCUMFERENCE': [waist],
-    'BP(mmHg)': [f'{systolic_bp}/{diastolic_bp}'],
+    'BP(mmHg)': [f'{systolic_bp}/{diastopic_bp}' if (systolic_bp and diastopic_bp) else '120/80'],
     'BLOOD SUGAR(mmol/L)': [blood_sugar],
     'HTN': [htn]
 }
-input_df_raw = pd.DataFrame(input_dict_raw)
+input_df_raw = pd.Datafame(input_dict_raw)
 
 # Preprocessing
 bp_split = input_df_raw['BP(mmHg)'].str.split('/', expand=True)
